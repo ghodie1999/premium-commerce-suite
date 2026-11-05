@@ -20,9 +20,7 @@ export function NewArrivals() {
       <div className="mx-auto max-w-7xl">
         <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
-              Just landed
-            </p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Just landed</p>
             <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">New Arrivals</h2>
           </div>
           <a

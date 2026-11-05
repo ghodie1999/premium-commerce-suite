@@ -2,7 +2,10 @@ import { Facebook, Instagram, Lock, Mail, MapPin, Phone, ShoppingBag, Twitter } 
 
 const columns = [
   { title: "Shop", links: ["New In", "Best Sellers", "Deals", "Gift Cards", "Collections"] },
-  { title: "Support", links: ["FAQs", "Shipping Policy", "Returns & Refunds", "Track Order", "Contact Us"] },
+  {
+    title: "Support",
+    links: ["FAQs", "Shipping Policy", "Returns & Refunds", "Track Order", "Contact Us"],
+  },
   { title: "Company", links: ["About Us", "Sustainability", "Careers", "Privacy Policy", "Terms"] },
 ];
 
@@ -21,8 +24,8 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="mt-4 max-w-xs text-sm text-primary-foreground/65">
-              Your destination for premium products at honest prices — curated,
-              verified and shipped worldwide.
+              Your destination for premium products at honest prices — curated, verified and shipped
+              worldwide.
             </p>
             <ul className="mt-5 grid gap-2 text-sm text-primary-foreground/70">
               <li className="flex items-center gap-2">
@@ -73,8 +76,8 @@ export function SiteFooter() {
         <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-primary-foreground/10 pt-6 text-xs text-primary-foreground/55">
           <p>© {new Date().getFullYear()} ShopEase. All rights reserved.</p>
           <p className="flex items-center gap-2">
-            <Lock className="size-3.5 text-success" /> Secure PCI-compliant checkout ·
-            Visa · Mastercard · Apple Pay · PayPal
+            <Lock className="size-3.5 text-success" /> Secure PCI-compliant checkout · Visa ·
+            Mastercard · Apple Pay · PayPal
           </p>
         </div>
       </div>

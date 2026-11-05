@@ -7,10 +7,7 @@ export function CartDrawer() {
   const shipping = subtotal > 100 || subtotal === 0 ? 0 : 9.95;
 
   return (
-    <div
-      className={`fixed inset-0 z-60 ${open ? "" : "pointer-events-none"}`}
-      aria-hidden={!open}
-    >
+    <div className={`fixed inset-0 z-60 ${open ? "" : "pointer-events-none"}`} aria-hidden={!open}>
       <button
         type="button"
         tabIndex={open ? 0 : -1}
@@ -68,9 +65,7 @@ export function CartDrawer() {
                   <div className="flex-1">
                     <p className="text-sm font-semibold leading-snug">{l.product.name}</p>
                     <p className="mt-1 text-xs text-muted-foreground">Qty {l.qty}</p>
-                    <p className="mt-1 text-sm font-bold">
-                      {formatPrice(l.product.price * l.qty)}
-                    </p>
+                    <p className="mt-1 text-sm font-bold">{formatPrice(l.product.price * l.qty)}</p>
                   </div>
                   <button
                     type="button"
@@ -94,15 +89,11 @@ export function CartDrawer() {
             </div>
             <div className="flex justify-between">
               <dt className="text-muted-foreground">Shipping</dt>
-              <dd className="font-semibold">
-                {shipping === 0 ? "Free" : formatPrice(shipping)}
-              </dd>
+              <dd className="font-semibold">{shipping === 0 ? "Free" : formatPrice(shipping)}</dd>
             </div>
             <div className="mt-1 flex justify-between border-t border-border pt-2">
               <dt className="font-display font-bold">Total</dt>
-              <dd className="font-display font-extrabold">
-                {formatPrice(subtotal + shipping)}
-              </dd>
+              <dd className="font-display font-extrabold">{formatPrice(subtotal + shipping)}</dd>
             </div>
           </dl>
           <button

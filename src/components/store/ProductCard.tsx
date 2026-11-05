@@ -44,9 +44,7 @@ export function ProductCard({ product }: { product: Product }) {
           onClick={() => setWished((v) => !v)}
           className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-card/90 shadow-soft backdrop-blur transition-colors hover:bg-card"
         >
-          <Heart
-            className={`size-4 ${wished ? "fill-accent text-accent" : "text-foreground"}`}
-          />
+          <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-foreground"}`} />
         </button>
 
         <button

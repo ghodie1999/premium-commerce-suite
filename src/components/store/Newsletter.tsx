@@ -36,7 +36,10 @@ export function Newsletter() {
           }}
           className="rounded-3xl bg-primary-foreground/8 p-6 backdrop-blur"
         >
-          <label htmlFor="newsletter-email" className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/70">
+          <label
+            htmlFor="newsletter-email"
+            className="text-xs font-semibold uppercase tracking-widest text-primary-foreground/70"
+          >
             Email address
           </label>
           <input

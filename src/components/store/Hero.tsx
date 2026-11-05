@@ -24,8 +24,8 @@ export function Hero() {
               </span>
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-primary-foreground/75">
-              Discover premium products curated for modern living — considered
-              materials, honest pricing, delivered fast.
+              Discover premium products curated for modern living — considered materials, honest
+              pricing, delivered fast.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">

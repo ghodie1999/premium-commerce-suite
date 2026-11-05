@@ -9,17 +9,12 @@ export function Testimonials() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
             40,000+ happy customers
           </p>
-          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
-            Loved for the details
-          </h2>
+          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Loved for the details</h2>
         </header>
 
         <ul className="grid gap-4 md:grid-cols-3">
           {testimonials.map((t) => (
-            <li
-              key={t.name}
-              className="hover-lift rounded-3xl bg-card p-7 shadow-soft"
-            >
+            <li key={t.name} className="hover-lift rounded-3xl bg-card p-7 shadow-soft">
               <div className="flex gap-0.5">
                 {Array.from({ length: t.rating }).map((_, i) => (
                   <Star key={i} className="size-4 fill-accent text-accent" />

@@ -86,16 +86,8 @@
     oklch(0.21 0.04 160) 60%,
     oklch(0.24 0.055 150) 100%
   );
-  --gradient-accent: linear-gradient(
-    100deg,
-    oklch(0.72 0.19 55) 0%,
-    oklch(0.66 0.21 34) 100%
-  );
-  --gradient-sand: linear-gradient(
-    120deg,
-    oklch(0.97 0.02 78) 0%,
-    oklch(0.93 0.035 60) 100%
-  );
+  --gradient-accent: linear-gradient(100deg, oklch(0.72 0.19 55) 0%, oklch(0.66 0.21 34) 100%);
+  --gradient-sand: linear-gradient(120deg, oklch(0.97 0.02 78) 0%, oklch(0.93 0.035 60) 100%);
 }
 
 @layer base {

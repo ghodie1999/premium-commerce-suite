@@ -32,9 +32,7 @@ export function CategoryGrid() {
                 <span className="flex items-center justify-between px-4 py-4">
                   <span className="leading-tight">
                     <span className="block text-sm font-semibold">{c.name}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {c.items} products
-                    </span>
+                    <span className="block text-xs text-muted-foreground">{c.items} products</span>
                   </span>
                   <ArrowUpRight className="size-4 text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
@@ -46,10 +44,7 @@ export function CategoryGrid() {
         <ul className="mt-4 grid gap-4 md:grid-cols-3">
           {collections.map((c) => (
             <li key={c.name}>
-              <a
-                href="#"
-                className="group relative block overflow-hidden rounded-3xl shadow-soft"
-              >
+              <a href="#" className="group relative block overflow-hidden rounded-3xl shadow-soft">
                 <img
                   src={c.image}
                   alt={c.name}
@@ -61,9 +56,7 @@ export function CategoryGrid() {
                 <span className="absolute inset-0 bg-linear-to-t from-primary/85 via-primary/25 to-transparent" />
                 <span className="absolute inset-x-6 bottom-6 text-primary-foreground">
                   <span className="font-display block text-xl font-bold">{c.name}</span>
-                  <span className="mt-1 block text-xs text-primary-foreground/75">
-                    {c.copy}
-                  </span>
+                  <span className="mt-1 block text-xs text-primary-foreground/75">{c.copy}</span>
                 </span>
               </a>
             </li>

@@ -37,8 +37,8 @@ export function DealOfDay() {
             <span className="block">it&apos;s gone.</span>
           </h2>
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Smart Watch Pro — fitness and health tracking with a 7-day battery.
-            Only a handful left at this price.
+            Smart Watch Pro — fitness and health tracking with a 7-day battery. Only a handful left
+            at this price.
           </p>
 
           <div className="mt-6 flex items-end gap-3">

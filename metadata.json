@@ -1,0 +1,6 @@
+{
+  "name": "ShopEase - Premium Commerce Suite",
+  "description": "Curated premium fashion, home and tech essentials storefront with deal of the day, product catalog, cart drawer, and responsive modern UI.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

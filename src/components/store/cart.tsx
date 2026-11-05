@@ -28,9 +28,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setLines((prev) => {
           const found = prev.find((l) => l.product.id === product.id);
           if (found) {
-            return prev.map((l) =>
-              l.product.id === product.id ? { ...l, qty: l.qty + 1 } : l,
-            );
+            return prev.map((l) => (l.product.id === product.id ? { ...l, qty: l.qty + 1 } : l));
           }
           return [...prev, { product, qty: 1 }];
         });
