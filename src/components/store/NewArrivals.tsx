@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { products } from "@/lib/catalog";
 import { ProductCard } from "./ProductCard";
@@ -21,15 +22,17 @@ export function NewArrivals() {
         <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Just landed</p>
-            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">New Arrivals</h2>
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl text-foreground">
+              New Arrivals
+            </h2>
           </div>
-          <a
-            href="#"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-accent"
+          <Link
+            to="/collections"
+            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
           >
-            View all
+            <span>View all products</span>
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </Link>
         </header>
 
         <div className="mb-6 flex flex-wrap gap-2">
@@ -41,8 +44,8 @@ export function NewArrivals() {
               aria-pressed={active === f}
               className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
                 active === f
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground hover:bg-sand-deep"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-secondary text-secondary-foreground hover:bg-sand-deep border border-border"
               }`}
             >
               {f}
@@ -50,8 +53,8 @@ export function NewArrivals() {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {sorted.map((p) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {sorted.slice(0, 8).map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
