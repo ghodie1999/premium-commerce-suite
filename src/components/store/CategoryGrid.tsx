@@ -4,7 +4,7 @@ import { categories, collections } from "@/lib/catalog";
 
 export function CategoryGrid() {
   return (
-    <section className="px-5 py-12 lg:px-8" id="categories">
+    <section className="scroll-mt-24 px-5 py-12 lg:px-8" id="categories">
       <div className="mx-auto max-w-7xl">
         <header className="mb-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
@@ -25,13 +25,14 @@ export function CategoryGrid() {
                 <Link
                   to="/collections/$slug"
                   params={{ slug: c.slug }}
-                  className="group block overflow-hidden rounded-3xl bg-card shadow-soft transition-shadow hover:shadow-lift border border-border/60"
+                  className="hover-lift group block overflow-hidden rounded-3xl bg-card shadow-soft border border-border/60"
                 >
                   <span className="block overflow-hidden bg-sand">
                     <img
                       src={c.image}
                       alt={c.name}
                       loading="lazy"
+                      decoding="async"
                       width={800}
                       height={1000}
                       className="aspect-4/5 w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -56,12 +57,13 @@ export function CategoryGrid() {
               <Link
                 to="/collections/$slug"
                 params={{ slug: c.slug }}
-                className="group relative block overflow-hidden rounded-3xl shadow-soft"
+                className="hover-lift group relative block overflow-hidden rounded-3xl shadow-soft"
               >
                 <img
                   src={c.image}
                   alt={c.name}
                   loading="lazy"
+                  decoding="async"
                   width={800}
                   height={1000}
                   className="aspect-16/10 w-full object-cover transition-transform duration-700 group-hover:scale-105"

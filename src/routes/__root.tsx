@@ -11,8 +11,11 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { CartProvider } from "../components/store/cart";
-import { CartDrawer } from "../components/store/CartDrawer";
+import { CartProvider } from "@/components/store/cart";
+import { CartDrawer } from "@/components/store/CartDrawer";
+import { WishlistProvider } from "@/components/store/wishlist";
+import { WishlistDrawer } from "@/components/store/WishlistDrawer";
+import { RegionProvider } from "@/components/store/region";
 
 function NotFoundComponent() {
   return (
@@ -93,6 +96,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "dns-prefetch", href: "https://fonts.googleapis.com" },
+      { rel: "dns-prefetch", href: "https://fonts.gstatic.com" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -128,11 +133,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <CartDrawer />
-      </CartProvider>
+      <RegionProvider>
+        <CartProvider>
+          <WishlistProvider>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+            <CartDrawer />
+            <WishlistDrawer />
+          </WishlistProvider>
+        </CartProvider>
+      </RegionProvider>
     </QueryClientProvider>
   );
 }

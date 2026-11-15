@@ -3,7 +3,7 @@ import { testimonials } from "@/lib/catalog";
 
 export function Testimonials() {
   return (
-    <section className="px-5 py-12 lg:px-8">
+    <section id="reviews" className="scroll-mt-24 px-5 py-12 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <header className="mb-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">

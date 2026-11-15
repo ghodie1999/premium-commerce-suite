@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ChevronRight,
@@ -9,13 +9,7 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import {
-  categories,
-  collections,
-  formatPrice,
-  products as allProducts,
-  type Product,
-} from "@/lib/catalog";
+import { categories, collections, products as allProducts, searchProducts } from "@/lib/catalog";
 import { ProductCard } from "./ProductCard";
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "rating" | "bestseller";
@@ -37,6 +31,14 @@ export function CollectionView({
   const [gridCols, setGridCols] = useState<3 | 4>(3);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
+  useEffect(() => {
+    setSelectedCategory(initialCollectionSlug);
+  }, [initialCollectionSlug]);
+
+  useEffect(() => {
+    setSearchQuery(initialSearchQuery);
+  }, [initialSearchQuery]);
+
   // Extract all available colors across products
   const availableColors = useMemo(() => {
     const set = new Set<string>();
@@ -46,7 +48,9 @@ export function CollectionView({
 
   // Filter & sort products
   const filteredProducts = useMemo(() => {
-    return allProducts
+    const baseProducts = searchQuery.trim() ? searchProducts(searchQuery) : allProducts;
+
+    return baseProducts
       .filter((p) => {
         // Category / Collection match
         if (selectedCategory !== "all") {
@@ -54,15 +58,6 @@ export function CollectionView({
           const matchCategory =
             p.category.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-") === selectedCategory;
           if (!matchCollection && !matchCategory) return false;
-        }
-
-        // Search match
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase();
-          const matchName = p.name.toLowerCase().includes(q);
-          const matchDesc = p.description.toLowerCase().includes(q);
-          const matchCategory = p.category.toLowerCase().includes(q);
-          if (!matchName && !matchDesc && !matchCategory) return false;
         }
 
         // Price range

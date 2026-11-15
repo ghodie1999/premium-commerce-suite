@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Eye, Heart, ShoppingBag, Star } from "lucide-react";
-import { formatPrice, type Product } from "@/lib/catalog";
-import { useCart } from "./cart";
+import type { Product } from "@/lib/catalog";
+import { useCart } from "@/components/store/cart";
+import { useRegion } from "@/components/store/region";
+import { useWishlist } from "@/components/store/wishlist";
+import { ProductImage } from "./ProductImage";
 import { QuickViewModal } from "./QuickViewModal";
 
 export function ProductCard({ product }: { product: Product }) {
-  const [wished, setWished] = useState(false);
+  const { isWished, toggleWishlist } = useWishlist();
+  const wished = isWished(product.id);
   const [color, setColor] = useState(0);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const { add } = useCart();
+  const { formatPrice } = useRegion();
 
   const discount = product.compareAt
     ? Math.round((1 - product.price / product.compareAt) * 100)
@@ -24,10 +29,13 @@ export function ProductCard({ product }: { product: Product }) {
             params={{ id: product.id }}
             className="block aspect-4/5 w-full overflow-hidden"
           >
-            <img
+            <ProductImage
               src={product.image}
+              productId={product.id}
+              category={product.category}
               alt={product.name}
               loading="lazy"
+              decoding="async"
               width={800}
               height={1000}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -53,7 +61,7 @@ export function ProductCard({ product }: { product: Product }) {
             type="button"
             aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
             aria-pressed={wished}
-            onClick={() => setWished((v) => !v)}
+            onClick={() => toggleWishlist(product)}
             className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-card/90 shadow-soft backdrop-blur transition-transform hover:scale-110 active:scale-95"
           >
             <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-foreground"}`} />

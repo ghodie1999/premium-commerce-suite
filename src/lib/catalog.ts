@@ -693,3 +693,204 @@ export function getProductsByCollection(slug: string): Product[] {
 export function getCollectionBySlug(slug: string): Collection | undefined {
   return collections.find((c) => c.slug === slug);
 }
+
+export function searchProducts(query: string): Product[] {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return products;
+
+  const terms = normalized.split(/\s+/).filter(Boolean);
+
+  return products
+    .map((product) => {
+      const name = product.name.toLowerCase();
+      const subtitle = product.subtitle.toLowerCase();
+      const category = product.category.toLowerCase();
+      const description = product.description.toLowerCase();
+      const materials = product.materials.toLowerCase();
+      const badge = (product.badge ?? "").toLowerCase();
+      const slugs = product.collectionSlugs.join(" ").toLowerCase();
+      const colors = product.colors.map((c) => c.name.toLowerCase()).join(" ");
+      const searchable = `${name} ${subtitle} ${category} ${description} ${materials} ${badge} ${slugs} ${colors}`;
+
+      const matchesAll = terms.every((term) => searchable.includes(term));
+      if (!matchesAll) return null;
+
+      let relevance = 0;
+      if (name === normalized) relevance += 100;
+      if (name.includes(normalized)) relevance += 50;
+      if (category.includes(normalized)) relevance += 25;
+      if (subtitle.includes(normalized)) relevance += 15;
+      relevance += product.reviews * 0.01;
+
+      return { product, relevance };
+    })
+    .filter((entry): entry is { product: Product; relevance: number } => entry !== null)
+    .sort((a, b) => b.relevance - a.relevance)
+    .map((entry) => entry.product);
+}
+
+function getProductTrendScore(product: Product): number {
+  const badgeBoost =
+    product.badge === "Best Seller"
+      ? 180
+      : product.badge === "New"
+        ? 140
+        : product.badge === "Limited"
+          ? 110
+          : product.badge === "Sale"
+            ? 90
+            : 0;
+  const trendingCollectionBoost = product.collectionSlugs.includes("trending-now") ? 120 : 0;
+  const bestSellerBoost = product.collectionSlugs.includes("best-sellers") ? 80 : 0;
+
+  return (
+    product.reviews * (product.rating / 5) + badgeBoost + trendingCollectionBoost + bestSellerBoost
+  );
+}
+
+export function getTrendingProducts(limit = 4): Product[] {
+  return [...products]
+    .sort((a, b) => getProductTrendScore(b) - getProductTrendScore(a))
+    .slice(0, limit);
+}
+
+export type TrendingSearch = {
+  term: string;
+  query: string;
+  category: Product["category"];
+  productId: string;
+  matchCount: number;
+  badge?: Product["badge"];
+};
+
+const PRODUCT_SHORT_KEYWORDS: Record<string, string> = {
+  "essential-hoodie": "Heavyweight Hoodie",
+  "leather-handbag": "Leather Tote Bag",
+  "classic-sneakers": "Leather Sneakers",
+  "eau-de-parfum": "Eau de Parfum",
+  "minimalist-chronograph": "Chronograph Watch",
+  "architectural-desk-lamp": "Pivot Desk Lamp",
+  "studio-master-headphones": "Wireless Headphones",
+  "artisanal-pour-over-set": "Pour-Over Set",
+  "riviera-sunglasses": "Sunglasses",
+};
+
+export function getTrendingSearches(limit = 6): TrendingSearch[] {
+  const ranked = getTrendingProducts(products.length);
+
+  return ranked.slice(0, limit).map((product) => {
+    const term = PRODUCT_SHORT_KEYWORDS[product.id] ?? product.name.split(" ").slice(-2).join(" ");
+    const matchCount = searchProducts(term).length;
+
+    return {
+      term,
+      query: term,
+      category: product.category,
+      productId: product.id,
+      matchCount: Math.max(1, matchCount),
+      badge: product.badge,
+    };
+  });
+}
+
+export const ORIGINAL_PRODUCT_PLACEHOLDERS: Record<string, string> = {
+  "essential-hoodie": hoodie,
+  "leather-handbag": bag,
+  "classic-sneakers": sneakers,
+  "eau-de-parfum": perfume,
+  "minimalist-chronograph": watch,
+  "architectural-desk-lamp": "/src/assets/images/product_desk_lamp_1793880894910.jpg",
+  "studio-master-headphones": "/src/assets/images/product_wireless_headphones_1793880896325.jpg",
+  "artisanal-pour-over-set": "/src/assets/images/product_ceramic_mug_set_1793880897145.jpg",
+  "riviera-sunglasses": "/src/assets/images/product_sunglasses_tortoise_1793880896756.jpg",
+};
+
+export const CATEGORY_PLACEHOLDER_IMAGES: Record<Product["category"], string> = {
+  Women: bag,
+  Men: hoodie,
+  "Home & Living": "/src/assets/images/product_desk_lamp_1793880894910.jpg",
+  Beauty: perfume,
+  Electronics: "/src/assets/images/product_wireless_headphones_1793880896325.jpg",
+  Accessories: watch,
+};
+
+export type ProductPlaceholderHint = {
+  id?: string | undefined;
+  category?: string | undefined;
+};
+
+export function getProductPlaceholderImage(hint?: ProductPlaceholderHint): string {
+  if (hint?.id && ORIGINAL_PRODUCT_PLACEHOLDERS[hint.id]) {
+    return ORIGINAL_PRODUCT_PLACEHOLDERS[hint.id]!;
+  }
+
+  if (hint?.category) {
+    const normalized = hint.category.trim().toLowerCase();
+    const matchedCategory = (
+      Object.keys(CATEGORY_PLACEHOLDER_IMAGES) as Product["category"][]
+    ).find(
+      (cat) =>
+        cat.toLowerCase() === normalized ||
+        cat.toLowerCase().replace(/ & /g, "-").replace(/ /g, "-") === normalized,
+    );
+    if (matchedCategory) {
+      return CATEGORY_PLACEHOLDER_IMAGES[matchedCategory];
+    }
+  }
+
+  return hoodie;
+}
+
+export function resolveProductImage(
+  src: string | null | undefined,
+  hint?: ProductPlaceholderHint,
+): string {
+  const trimmed = typeof src === "string" ? src.trim() : "";
+  if (trimmed.length > 0) {
+    return trimmed;
+  }
+  return getProductPlaceholderImage(hint);
+}
+
+export function resolveProductGallery(
+  gallery: readonly string[] | null | undefined,
+  primaryImage?: string | null,
+  hint?: ProductPlaceholderHint,
+): string[] {
+  const fallback = getProductPlaceholderImage(hint);
+  const validGallery = (gallery ?? [])
+    .map((item) => (typeof item === "string" ? item.trim() : ""))
+    .filter((item) => item.length > 0);
+
+  if (validGallery.length > 0) {
+    return validGallery;
+  }
+
+  return [resolveProductImage(primaryImage, hint) || fallback];
+}
+
+export function applyProductPlaceholders(
+  incoming: Partial<Product> & Pick<Product, "id" | "name" | "category" | "price">,
+): Product {
+  const hint: ProductPlaceholderHint = { id: incoming.id, category: incoming.category };
+  const image = resolveProductImage(incoming.image, hint);
+  const gallery = resolveProductGallery(incoming.gallery, image, hint);
+
+  return {
+    subtitle: incoming.subtitle ?? "Curated everyday essential",
+    collectionSlugs: incoming.collectionSlugs ?? ["all"],
+    rating: incoming.rating ?? 4.8,
+    reviews: incoming.reviews ?? 0,
+    colors: incoming.colors ?? [],
+    stock: incoming.stock ?? 10,
+    description: incoming.description ?? "",
+    highlights: incoming.highlights ?? [],
+    materials: incoming.materials ?? "",
+    care: incoming.care ?? "",
+    shippingInfo: incoming.shippingInfo ?? "Ships within 24 hours.",
+    reviewsList: incoming.reviewsList ?? [],
+    ...incoming,
+    image,
+    gallery,
+  };
+}

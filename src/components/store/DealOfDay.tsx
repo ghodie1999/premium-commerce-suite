@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Flame } from "lucide-react";
 import watch from "@/assets/deal-watch.jpg";
-import { formatPrice } from "@/lib/catalog";
+import { useRegion } from "@/components/store/region";
+import { ProductImage } from "./ProductImage";
+import { ParallaxFrame } from "./SectionMotion";
 
 const DEAL_SECONDS = 8 * 3600 + 42 * 60 + 15;
 
@@ -12,6 +14,7 @@ function pad(n: number) {
 
 export function DealOfDay() {
   const [left, setLeft] = useState(DEAL_SECONDS);
+  const { formatPrice } = useRegion();
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -27,7 +30,7 @@ export function DealOfDay() {
   ];
 
   return (
-    <section className="px-5 py-12 lg:px-8" id="deal">
+    <section className="scroll-mt-24 px-5 py-12 lg:px-8" id="deal">
       <div className="mx-auto grid max-w-7xl items-center gap-8 overflow-hidden rounded-4xl bg-sand-gradient px-7 py-10 shadow-soft sm:px-12 lg:grid-cols-2 border border-border/60">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-accent/12 px-3.5 py-1.5 text-xs font-bold uppercase tracking-widest text-accent">
@@ -89,20 +92,25 @@ export function DealOfDay() {
           </div>
         </div>
 
-        <Link
-          to="/products/$id"
-          params={{ id: "minimalist-chronograph" }}
-          className="group block rounded-3xl bg-card p-6 shadow-card border border-border/80 hover:shadow-lift transition-all"
-        >
-          <img
-            src={watch}
-            alt="Atelier Chronograph Watch 40mm"
-            loading="lazy"
-            width={1000}
-            height={1000}
-            className="mx-auto w-full max-w-sm object-contain transition-transform duration-500 group-hover:scale-105"
-          />
-        </Link>
+        <ParallaxFrame intensity={14}>
+          <Link
+            to="/products/$id"
+            params={{ id: "minimalist-chronograph" }}
+            className="group block rounded-3xl bg-card p-6 shadow-card border border-border/80 hover:shadow-lift transition-all"
+          >
+            <ProductImage
+              src={watch}
+              productId="minimalist-chronograph"
+              category="Accessories"
+              alt="Atelier Chronograph Watch 40mm"
+              loading="lazy"
+              decoding="async"
+              width={1000}
+              height={1000}
+              className="mx-auto w-full max-w-sm object-contain transition-transform duration-500 group-hover:scale-105"
+            />
+          </Link>
+        </ParallaxFrame>
       </div>
     </section>
   );

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, Heart, ShieldCheck, ShoppingBag, Star, Truck, X } from "lucide-react";
-import { formatPrice, type Product } from "@/lib/catalog";
-import { useCart } from "./cart";
+import type { Product } from "@/lib/catalog";
+import { useCart } from "@/components/store/cart";
+import { useRegion } from "@/components/store/region";
+import { useWishlist } from "@/components/store/wishlist";
+import { ProductImage } from "./ProductImage";
 
 export function QuickViewModal({
   product,
@@ -13,11 +16,14 @@ export function QuickViewModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const { isWished, toggleWishlist } = useWishlist();
+  const wished = isWished(product.id);
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | undefined>(product.sizes?.[0]?.label);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const { add } = useCart();
+  const { formatPrice } = useRegion();
 
   if (!open) return null;
 
@@ -61,12 +67,31 @@ export function QuickViewModal({
 
         {/* Product Media Column */}
         <div className="relative md:w-1/2 bg-sand shrink-0 overflow-hidden min-h-[260px] md:min-h-full">
-          <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+          <ProductImage
+            src={product.image}
+            productId={product.id}
+            category={product.category}
+            alt={product.name}
+            loading="lazy"
+            decoding="async"
+            width={600}
+            height={750}
+            className="h-full w-full object-cover"
+          />
           {product.badge && (
             <span className="absolute left-4 top-4 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
               {product.badge}
             </span>
           )}
+          <button
+            type="button"
+            aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
+            aria-pressed={wished}
+            onClick={() => toggleWishlist(product)}
+            className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-card/90 shadow-soft backdrop-blur transition-transform hover:scale-110 active:scale-95"
+          >
+            <Heart className={`size-4 ${wished ? "fill-accent text-accent" : "text-foreground"}`} />
+          </button>
         </div>
 
         {/* Details & Actions Column */}

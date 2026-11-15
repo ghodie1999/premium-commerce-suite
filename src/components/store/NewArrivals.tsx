@@ -17,7 +17,7 @@ export function NewArrivals() {
   });
 
   return (
-    <section className="px-5 py-12 lg:px-8" id="new-arrivals">
+    <section className="scroll-mt-24 px-5 py-12 lg:px-8" id="new-arrivals">
       <div className="mx-auto max-w-7xl">
         <header className="mb-7 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -42,7 +42,7 @@ export function NewArrivals() {
               type="button"
               onClick={() => setActive(f)}
               aria-pressed={active === f}
-              className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
+              className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 ${
                 active === f
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "bg-secondary text-secondary-foreground hover:bg-sand-deep border border-border"
@@ -53,9 +53,11 @@ export function NewArrivals() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {sorted.slice(0, 8).map((p) => (
-            <ProductCard key={p.id} product={p} />
+        <div key={active} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {sorted.slice(0, 8).map((p, idx) => (
+            <div key={p.id} style={{ animationDelay: `${idx * 45}ms` }} className="reveal-up">
+              <ProductCard product={p} />
+            </div>
           ))}
         </div>
       </div>

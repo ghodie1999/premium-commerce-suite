@@ -8,7 +8,7 @@ export type CartLine = {
   selectedSize?: string;
 };
 
-type CartApi = {
+export type CartApi = {
   lines: CartLine[];
   count: number;
   subtotal: number;
@@ -20,7 +20,27 @@ type CartApi = {
   setOpen: (open: boolean) => void;
 };
 
-const CartContext = createContext<CartApi | null>(null);
+// Guarantee a single Context instance across all module paths, SSR, and client chunks
+const CART_CONTEXT_KEY = Symbol.for("shopease.cart.context");
+type GlobalWithCart = typeof globalThis & {
+  [CART_CONTEXT_KEY]?: React.Context<CartApi | null>;
+};
+
+const CartContext: React.Context<CartApi | null> = ((globalThis as GlobalWithCart)[
+  CART_CONTEXT_KEY
+] ||= createContext<CartApi | null>(null));
+
+const defaultCartApi: CartApi = {
+  lines: [],
+  count: 0,
+  subtotal: 0,
+  add: () => {},
+  updateQty: () => {},
+  remove: () => {},
+  clearCart: () => {},
+  open: false,
+  setOpen: () => {},
+};
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
@@ -79,8 +99,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   return <CartContext.Provider value={api}>{children}</CartContext.Provider>;
 }
 
-export function useCart() {
+export function useCart(): CartApi {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
-  return ctx;
+  return ctx ?? defaultCartApi;
 }

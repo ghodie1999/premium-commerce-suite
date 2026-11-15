@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Globe, Lock, Sparkles, Truck } from "lucide-react";
 import heroImage from "@/assets/hero.jpg";
+import { ParallaxFrame } from "./SectionMotion";
 
 const features = [
   { icon: Truck, label: "Free Shipping", sub: "Orders over $100" },
@@ -11,7 +12,7 @@ const features = [
 
 export function Hero() {
   return (
-    <section className="px-5 pb-6 pt-2 lg:px-8">
+    <section id="hero" className="scroll-mt-24 px-5 pb-6 pt-2 lg:px-8">
       <div className="mx-auto max-w-7xl overflow-hidden rounded-4xl bg-hero-gradient shadow-card">
         <div className="grid items-center gap-10 px-7 py-12 sm:px-12 lg:grid-cols-[1.05fr_1fr] lg:gap-4 lg:py-16">
           <div className="reveal-up text-primary-foreground">
@@ -61,12 +62,14 @@ export function Hero() {
             </ul>
           </div>
 
-          <div className="relative">
+          <ParallaxFrame intensity={16} className="relative">
             <img
               src={heroImage}
               alt="Cream leather tote bag, white sneakers and an olive vase on beige pedestals"
               width={1200}
               height={1008}
+              fetchPriority="high"
+              decoding="async"
               className="w-full rounded-3xl object-cover shadow-lift"
             />
             <div className="absolute -left-2 top-6 grid size-24 place-items-center rounded-full bg-accent-gradient text-center text-accent-foreground shadow-lift sm:size-28">
@@ -77,7 +80,7 @@ export function Hero() {
                 </span>
               </span>
             </div>
-          </div>
+          </ParallaxFrame>
         </div>
       </div>
     </section>

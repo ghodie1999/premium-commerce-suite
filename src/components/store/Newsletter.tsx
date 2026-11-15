@@ -8,7 +8,7 @@ export function Newsletter() {
   const [done, setDone] = useState(false);
 
   return (
-    <section className="px-5 py-12 lg:px-8">
+    <section id="newsletter" className="scroll-mt-24 px-5 py-12 lg:px-8">
       <div className="mx-auto grid max-w-7xl items-center gap-8 overflow-hidden rounded-4xl bg-hero-gradient px-7 py-12 text-primary-foreground shadow-card sm:px-12 lg:grid-cols-2">
         <div>
           <span className="grid size-12 place-items-center rounded-2xl bg-accent-gradient text-accent-foreground">

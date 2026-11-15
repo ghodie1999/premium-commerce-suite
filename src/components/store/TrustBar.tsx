@@ -10,7 +10,7 @@ const items = [
 
 export function TrustBar() {
   return (
-    <section className="px-5 py-6 lg:px-8">
+    <section id="highlights" className="scroll-mt-24 px-5 py-6 lg:px-8">
       <ul className="mx-auto grid max-w-7xl gap-3 rounded-3xl bg-sand-gradient p-4 sm:grid-cols-2 lg:grid-cols-5">
         {items.map(({ icon: Icon, title, copy }) => (
           <li

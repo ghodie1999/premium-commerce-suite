@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { CheckCircle2, Lock, Minus, Plus, ShoppingBag, Trash2, Truck, X } from "lucide-react";
-import { formatPrice } from "@/lib/catalog";
-import { useCart } from "./cart";
+import { useCart } from "@/components/store/cart";
+import { useRegion } from "@/components/store/region";
+import { ProductImage } from "./ProductImage";
 
 export function CartDrawer() {
   const { lines, open, setOpen, remove, updateQty, clearCart, subtotal, count } = useCart();
+  const { formatPrice } = useRegion();
   const [checkingOut, setCheckingOut] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
 
@@ -148,8 +150,10 @@ export function CartDrawer() {
             <ul className="grid gap-4 divide-y divide-border/60">
               {lines.map((l, index) => (
                 <li key={`${l.product.id}-${index}`} className="flex gap-4 pt-4 first:pt-0">
-                  <img
+                  <ProductImage
                     src={l.product.image}
+                    productId={l.product.id}
+                    category={l.product.category}
                     alt={l.product.name}
                     loading="lazy"
                     width={800}
