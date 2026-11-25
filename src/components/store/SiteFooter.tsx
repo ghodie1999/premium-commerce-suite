@@ -137,10 +137,21 @@ export function SiteFooter() {
 
           <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-primary-foreground/10 pt-6 text-xs text-primary-foreground/55">
             <p>© {new Date().getFullYear()} ShopEase. All rights reserved.</p>
-            <p className="flex items-center gap-2">
-              <Lock className="size-3.5 text-success" /> 256-Bit SSL Encrypted Checkout · Visa ·
-              Mastercard · Apple Pay · PayPal · Klarna
-            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to="/sections"
+                className="text-primary-foreground/65 underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                Section Library
+              </Link>
+              <span aria-hidden="true" className="text-primary-foreground/25">
+                ·
+              </span>
+              <p className="flex items-center gap-2">
+                <Lock className="size-3.5 text-success" /> 256-Bit SSL Encrypted Checkout · Visa ·
+                Mastercard · Apple Pay · PayPal · Klarna
+              </p>
+            </div>
           </div>
         </div>
       </footer>
